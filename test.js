@@ -12,40 +12,29 @@ paintStroke = function (array) {
     }
     for (let row=0; row<auxGrid.length; row++) {
         if (row == 0) {
-            let auxArray = []
-            for (let col=0; col<auxGrid[row].length; col++) {
-                if (col==0) {auxArray.push({letter:auxGrid[row][col],stroke:1})}
-                if (auxGrid[row][col]==auxGrid[row][col-1]) {
-                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[row][col-1].stroke})
+            let auxArray = [{letter:auxGrid[row][0],stroke:1}]
+            for (let col=1; col<auxGrid[row].length; col++) {
+                if (auxGrid[0][col]==auxGrid[0][col-1]) {
+                    auxArray.push({letter:auxGrid[0][col],stroke:auxArray[col-1].stroke})
                 } else {
-                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[row][col-1].stroke +1 })}
+                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[col-1].stroke + 1 })}
             }
             finalGrid.push(auxArray)
         } else {
-            let auxArray = []
-            for (let col=0; col<auxGrid[row].length; col++) {
-                if (col==0) {
-                    if (auxGrid[row][col]==auxGrid[row-1][col]) {
-                        auxArray.push({letter:auxGrid[row][col],stroke:auxGrid[row-1][col]})
-                    } else {
-                        auxArray.push({letter:auxGrid[row][col],stroke:auxGrid[row-1][col]})
-                    }
-                }
-                
-            if (col==0) {auxArray.push({letter:auxGrid[row][col],stroke:1})}
-            if (auxGrid[row][col]==auxGrid[row][col+1]) {
-                auxArray.push({letter:auxGrid[row][col],stroke:auxArray[row][col].stroke})
-            } else {
-                auxArray.push({letter:auxGrid[row][col],stroke:auxArray[row][col].stroke +1 })}
-
+            let auxArray = [
+                (auxGrid[row][0]==auxGrid[row-1][0])? 
+                {letter:auxGrid[row][0],stroke:finalGrid[row-1][0].stroke} 
+                : {letter:auxGrid[row][0],stroke:finalGrid[row-1][0].stroke + 1} 
+            ]
+            for (let col=1; col<auxGrid[row].length; col++) {
+                if (auxGrid[row][col]==auxGrid[row][col-1]) {
+                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[col-1].stroke})
+                } else {
+                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[col-1].stroke + 1 })}
+            }
+            finalGrid.push(auxArray)
         }
-        
-        }
-
-
     }
-    
-    
     return console.log(finalGrid)
 }
 
