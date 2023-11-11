@@ -11,7 +11,7 @@
 
 ### EXAMPLE: the function receives the following array: ["aabba","aabbc","aaacc","bbbaa"]
 - this will create a 4x5 matrix, pictured below
-  
- <img src="tech.png"></img>
+
+ <img src="tech.png" style="width:500px; height:250px; object-fit:cover"></img>
  
 ### we will need 6 strokes to paint the whole matrix
