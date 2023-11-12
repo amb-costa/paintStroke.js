@@ -6,36 +6,53 @@
 
 paintStroke = function (array) {
     let auxGrid = [];
-    let finalGrid= [];
+    let finalGrid = [];
+    let paint = 1
+    // turning every string into an array containing letters
     for (let str of array) {
         auxGrid.push(Array.from(str))
     }
-    for (let row=0; row<auxGrid.length; row++) {
-        if (row == 0) {
-            let auxArray = [{letter:auxGrid[row][0],stroke:1}]
-            for (let col=1; col<auxGrid[row].length; col++) {
-                if (auxGrid[0][col]==auxGrid[0][col-1]) {
-                    auxArray.push({letter:auxGrid[0][col],stroke:auxArray[col-1].stroke})
-                } else {
-                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[col-1].stroke + 1 })}
-            }
-            finalGrid.push(auxArray)
+    
+    // initial case: comparing cols in the first row
+    let auxArray = [{ letter : auxGrid[0][0], stroke : 1 }]
+    for (let col = 1; col < auxGrid[0].length; col++) {
+        // if letters are the same, share a stroke
+        // if not, adds a stroke
+        let str = auxArray[col-1].stroke
+        if (auxGrid[0][col] == auxGrid[0][col-1]) {
+            auxArray.push({ letter : auxGrid[0][col], stroke : str })
         } else {
-            let auxArray = [
-                (auxGrid[row][0]==auxGrid[row-1][0])? 
-                {letter:auxGrid[row][0],stroke:finalGrid[row-1][0].stroke} 
-                : {letter:auxGrid[row][0],stroke:finalGrid[row-1][0].stroke + 1} 
-            ]
-            for (let col=1; col<auxGrid[row].length; col++) {
-                if (auxGrid[row][col]==auxGrid[row][col-1]) {
-                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[col-1].stroke})
-                } else {
-                    auxArray.push({letter:auxGrid[row][col],stroke:auxArray[col-1].stroke + 1 })}
-            }
-            finalGrid.push(auxArray)
+            auxArray.push({ letter : auxGrid[0][col], stroke : str + 1 })}
         }
+    // at the end, paint gets updated with last stroke score
+    paint = auxArray[auxGrid[0].length-1].stroke
+    finalGrid.push(auxArray)
+    
+    for (let row = 1; row < auxGrid.length; row++) {
+        // initial case: first letter
+        let auxArray = []
+        if (auxGrid[row][0] == auxGrid[row-1][0]) {
+            auxArray.push({ letter : auxGrid[row][0], stroke : finalGrid[row-1][0].stroke })
+        } else {
+            auxArray.push({ letter : auxGrid[row][0], stroke : paint + 1 })
+        }
+        for (let col = 1; col < auxGrid[row].length; col++) {
+            let str = finalGrid[row-1][col].stroke
+            if (auxGrid[row][col] == auxGrid[row-1][col]) {
+                auxArray.push({ letter : auxGrid[row][col], stroke : finalGrid[row-1][col].stroke })
+            } else {
+                if (auxGrid[row][col] == auxGrid[row][col-1]) {
+                    auxArray.push({ letter : auxGrid[row][col], stroke : auxArray[col-1].stroke })
+                } else {
+                    paint++
+                    auxArray.push({letter:auxGrid[row][col], stroke : paint })}                    
+                }
+            }
+        finalGrid.push(auxArray)
     }
+    
     return console.log(finalGrid)
+    
 }
 
-paintStroke(["aaabc", "bbaac"])
+paintStroke(["aabba","aabbc","aaacc","bbbaa"])
