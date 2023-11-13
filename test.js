@@ -13,6 +13,24 @@ paintStroke = function (array) {
         auxGrid.push(Array.from(str))
     }
     
+    //comparar = element above(row-1) and before(col-1)
+    comparar = function (row, col, paint) {
+        const coord = auxGrid[row][col]
+        const above = auxGrid[row-1][col]
+        const before = auxGrid[row][col-1]
+        switch (coord) {
+            case (coord==above) :
+                return (finalGrid[row-1][col].stroke)
+                break;
+            case (coord==before):
+                return (finalGrid[row][col-1].stroke)
+                break;
+            default:
+                return (paint++)
+        }
+    }
+
+    
     // initial case: comparing cols in the first row
     let auxArray = [{ letter : auxGrid[0][0], stroke : 1 }]
     for (let col = 1; col < auxGrid[0].length; col++) {
